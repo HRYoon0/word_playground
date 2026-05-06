@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Typing Cafe</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="game-panel" aria-label="Typing cafe game">
+        <header class="top-bar">
+          <div>
+            <p class="eyebrow">Elementary English Typing</p>
+            <h1>Typing Cafe</h1>
+          </div>
+          <div class="controls">
+            <label class="select-wrap">
+              <span>Start Level</span>
+              <select id="levelSelect">
+                <option value="1">Level 1</option>
+                <option value="3" selected>Level 3</option>
+                <option value="5">Level 5</option>
+              </select>
+            </label>
+            <button id="startButton" type="button">Start</button>
+          </div>
+        </header>
+
+        <div class="score-row" aria-label="Game score">
+          <div>
+            <span id="scoreValue">0</span>
+            <small>score</small>
+          </div>
+          <div>
+            <span id="comboValue">0</span>
+            <small>combo</small>
+          </div>
+          <div>
+            <span id="accuracyValue">100%</span>
+            <small>accuracy</small>
+          </div>
+          <div>
+            <span id="levelValue">1</span>
+            <small>level</small>
+          </div>
+        </div>
+
+        <section class="cafe-stage" aria-live="polite">
+          <div class="wall-art">CAFE</div>
+          <div class="shelf">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div class="barista">
+            <div class="face"></div>
+            <div class="body"></div>
+          </div>
+          <div class="order-belt" id="orderBelt"></div>
+          <div class="counter">
+            <div class="plate" id="plate"></div>
+            <div class="steam"></div>
+          </div>
+          <div class="message-card" id="messageCard">
+            <strong>Ready?</strong>
+            <span>Type the word on an order ticket.</span>
+          </div>
+        </section>
+
+        <form class="typing-box" id="typingForm" autocomplete="off">
+          <input
+            id="wordInput"
+            name="word"
+            type="text"
+            inputmode="latin"
+            autocapitalize="off"
+            spellcheck="false"
+            placeholder="type an order word here"
+            aria-label="Type an order word"
+          />
+          <button type="submit">Serve</button>
+        </form>
+      </section>
+
+      <aside class="side-panel" aria-label="Cafe progress">
+        <section class="status-card">
+          <div class="avatar" aria-hidden="true">
+            <span></span>
+          </div>
+          <div>
+            <h2>Today&apos;s Cafe</h2>
+            <p id="feedbackText">Choose a level and open the cafe.</p>
+          </div>
+        </section>
+
+        <section class="level-card">
+          <div class="section-title">
+            <h2>Level Goal</h2>
+            <span id="goalLabel">0 / 0</span>
+          </div>
+          <div class="progress-track" aria-label="Level progress">
+            <div id="goalBar" class="progress-fill"></div>
+          </div>
+        </section>
+
+        <section class="served-card">
+          <div class="section-title">
+            <h2>Served Orders</h2>
+            <span id="servedCount">0 orders</span>
+          </div>
+          <div class="served-list" id="servedList" aria-label="Served order collection"></div>
+        </section>
+
+        <section class="word-bank">
+          <div class="section-title">
+            <h2>Practice Words</h2>
+            <span id="wordLevelLabel">0 words</span>
+          </div>
+          <div id="wordBank" class="word-list"></div>
+        </section>
+      </aside>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
