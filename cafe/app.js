@@ -224,6 +224,17 @@ function gameOver() {
   elements.feedbackText.textContent = "Press Start to try again.";
 }
 
+function showCustomerReaction(order, reaction) {
+  const bubble = document.createElement("span");
+  bubble.className = "customer-reaction";
+  bubble.textContent = reaction;
+  order.customerNode.parentElement.append(bubble);
+
+  const left = order.customerNode.offsetLeft + order.customerNode.offsetWidth / 2;
+  bubble.style.left = `${left}px`;
+  setTimeout(() => bubble.remove(), 1200);
+}
+
 function spawnOrder() {
   if (!state.running) return;
 
@@ -274,8 +285,10 @@ function tickOrders() {
     order.patienceNode.style.transform = `scaleX(${remainingRatio})`;
 
     if (remainingRatio <= 0) {
+      showCustomerReaction(order, "💢");
       order.node.remove();
-      order.customerNode.remove();
+      order.customerNode.classList.add("served");
+      setTimeout(() => order.customerNode.remove(), 900);
       registerMiss(`"${order.word}" waited too long. Serve the next order.`);
     } else {
       survivors.push(order);
@@ -297,7 +310,7 @@ function addServedItem(icon) {
 }
 
 function popPlate(icon) {
-  elements.plate.textContent = icon;
+  elements.plate.innerHTML = `<span class="plate-food">${icon}</span>`;
   elements.plate.classList.remove("pop");
   window.requestAnimationFrame(() => elements.plate.classList.add("pop"));
 }
@@ -348,10 +361,11 @@ function serveWord(rawWord) {
   state.score += settings.points + speedBonus + comboBonus;
   state.orders = state.orders.filter((order) => order.id !== match.id);
 
+  showCustomerReaction(match, "♥");
   match.node.classList.add("served");
   match.customerNode.classList.add("served");
-  setTimeout(() => match.node.remove(), 170);
-  setTimeout(() => match.customerNode.remove(), 170);
+  setTimeout(() => match.node.remove(), 320);
+  setTimeout(() => match.customerNode.remove(), 900);
   addServedItem(match.icon);
   popPlate(match.icon);
   elements.feedbackText.textContent = `Served "${match.word}" with a ${speedBonus} point speed bonus.`;
@@ -383,7 +397,7 @@ function startGame() {
   };
 
   elements.servedList.innerHTML = "";
-  elements.plate.textContent = "";
+  elements.plate.innerHTML = "";
   elements.wordInput.value = "";
   elements.wordInput.focus();
   elements.startButton.textContent = "Restart";

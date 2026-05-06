@@ -306,17 +306,7 @@ select {
     radial-gradient(circle at 0 50%, transparent 0 10px, rgba(255,255,255,0.96) 11px),
     linear-gradient(180deg, #fffdf7, #fff8ea);
   box-shadow: 0 10px 20px rgba(89, 55, 31, 0.12), inset 0 -4px 0 rgba(89, 55, 31, 0.05);
-  transition: transform 0.15s ease, opacity 0.15s ease;
-}
-
-.order-ticket::before {
-  content: "";
-  position: absolute;
-  left: 66px;
-  top: 12px;
-  bottom: 13px;
-  width: 2px;
-  background: repeating-linear-gradient(180deg, rgba(89,55,31,0.12) 0 5px, transparent 5px 10px);
+  transition: transform 0.32s ease, opacity 0.32s ease;
 }
 
 .order-ticket.served {
@@ -326,24 +316,37 @@ select {
 
 .customer-line {
   position: absolute;
-  left: 180px;
-  right: 330px;
-  bottom: 82px;
+  left: calc(50% + 128px);
+  right: 26px;
+  bottom: 52px;
   display: flex;
   align-items: end;
-  justify-content: center;
-  gap: 8px;
+  justify-content: flex-start;
+  gap: 6px;
   min-height: 92px;
   z-index: 4;
   pointer-events: none;
 }
 
 .waiting-customer {
-  width: 72px;
-  height: 92px;
+  width: 60px;
+  height: 78px;
   object-fit: contain;
   filter: drop-shadow(0 8px 0 rgba(89, 55, 31, 0.09));
-  transition: transform 0.15s ease, opacity 0.15s ease;
+  transition: transform 0.85s ease, opacity 0.85s ease;
+}
+
+.customer-reaction {
+  position: absolute;
+  bottom: 124px;
+  z-index: 5;
+  color: #ef6a61;
+  font-size: 1.7rem;
+  font-weight: 950;
+  line-height: 1;
+  transform: translateX(-50%);
+  animation: reaction-pop 1.15s ease forwards;
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.8);
 }
 
 .waiting-customer:nth-child(2n) {
@@ -425,6 +428,11 @@ select {
 
 .plate.pop {
   animation: pop 0.35s ease;
+}
+
+.plate-food {
+  display: block;
+  animation: plate-food-fade 1.35s ease forwards;
 }
 
 .steam {
@@ -632,6 +640,40 @@ select {
   }
   100% {
     transform: translateX(-50%) scale(1);
+  }
+}
+
+@keyframes plate-food-fade {
+  0% {
+    opacity: 0;
+    transform: translateY(6px) scale(0.85);
+  }
+  18% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.92);
+  }
+}
+
+@keyframes reaction-pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 10px) scale(0.7);
+  }
+  25% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1.15);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -24px) scale(1);
   }
 }
 
