@@ -65,6 +65,7 @@ button {
 .typing-box,
 .captain,
 .level-card,
+.miss-card,
 .aquarium,
 .word-bank {
   background: var(--panel);
@@ -509,6 +510,7 @@ select {
 
 .captain,
 .level-card,
+.miss-card,
 .aquarium,
 .word-bank {
   padding: 16px;
@@ -583,6 +585,22 @@ select {
   border-radius: inherit;
   background: linear-gradient(90deg, #57b96c, #ffd166, #ff7b7b);
   transition: width 0.22s ease;
+}
+
+.chance-dots {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+.chance-dots span {
+  height: 12px;
+  border-radius: 999px;
+  background: #57b96c;
+}
+
+.chance-dots span.lost {
+  background: rgba(22, 48, 71, 0.14);
 }
 
 .tank {

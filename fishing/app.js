@@ -757,6 +757,8 @@ const fishTypes = [
   { className: "fish-speed-quick", label: "quick", speedMultiplier: 1.62, scoreMultiplier: 1.55 },
 ];
 
+const maxMisses = 5;
+
 const elements = {
   pond: document.querySelector("#pond"),
   startButton: document.querySelector("#startButton"),
@@ -771,6 +773,8 @@ const elements = {
   feedbackText: document.querySelector("#feedbackText"),
   goalLabel: document.querySelector("#goalLabel"),
   goalBar: document.querySelector("#goalBar"),
+  missLabel: document.querySelector("#missLabel"),
+  chanceDots: document.querySelector("#chanceDots"),
   tank: document.querySelector("#tank"),
   caughtCount: document.querySelector("#caughtCount"),
   wordBank: document.querySelector("#wordBank"),
@@ -792,6 +796,7 @@ function createInitialState() {
     levelCaught: 0,
     attempts: 0,
     correct: 0,
+    misses: 0,
     fish: [],
     usedWords: new Set(),
   };
@@ -804,9 +809,9 @@ function getLevelGoal(level) {
 function getLevelSettings(level) {
   const clampedLevel = Math.min(level, 10);
   return {
-    spawnMs: Math.max(590, 1620 - clampedLevel * 95),
-    speedMin: 0.42 + clampedLevel * 0.13,
-    speedMax: 0.78 + clampedLevel * 0.2,
+    spawnMs: Math.max(980, 2400 - clampedLevel * 95),
+    speedMin: 0.2 + clampedLevel * 0.07,
+    speedMax: 0.42 + clampedLevel * 0.12,
     maxFish: Math.min(9, 4 + Math.floor(clampedLevel / 2)),
     points: 7 + clampedLevel * 3,
   };
@@ -881,6 +886,14 @@ function updateStats() {
   elements.goalLabel.textContent = `${state.levelCaught} / ${goal}`;
   elements.goalBar.style.width = `${progress}%`;
   elements.caughtCount.textContent = `${state.caught} fish`;
+  elements.missLabel.textContent = `${Math.max(maxMisses - state.misses, 0)} left`;
+  elements.chanceDots.innerHTML = "";
+
+  for (let index = 0; index < maxMisses; index += 1) {
+    const dot = document.createElement("span");
+    dot.classList.toggle("lost", index < state.misses);
+    elements.chanceDots.append(dot);
+  }
 }
 
 function setMessage(title, body, isVisible = true) {
@@ -891,6 +904,25 @@ function setMessage(title, body, isVisible = true) {
 function scheduleSpawning() {
   window.clearInterval(spawnTimerId);
   spawnTimerId = window.setInterval(spawnFish, getLevelSettings(state.level).spawnMs);
+}
+
+function registerMiss(message) {
+  state.misses += 1;
+  state.combo = 0;
+  elements.feedbackText.textContent = message;
+  updateStats();
+
+  if (state.misses >= maxMisses) {
+    gameOver();
+  }
+}
+
+function gameOver() {
+  stopGame();
+  clearFish();
+  elements.wordInput.value = "";
+  setMessage("Game Over", `You caught ${state.caught} fish and scored ${state.score}.`);
+  elements.feedbackText.textContent = "Press Start to try again.";
 }
 
 function spawnFish() {
@@ -950,9 +982,7 @@ function animate(timestamp = 0) {
 
     if (isGoneRight || isGoneLeft) {
       fish.node.remove();
-      state.combo = 0;
-      elements.feedbackText.textContent = `${fish.word} swam away. That was a ${fish.type.label} fish.`;
-      updateStats();
+      registerMiss(`${fish.word} swam away. That was a ${fish.type.label} fish.`);
     } else {
       survivors.push(fish);
     }

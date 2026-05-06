@@ -56,6 +56,8 @@ const wordSets = {
 
 const foodIcons = ["🍎", "🥛", "🍪", "🥪", "🍓", "🍰", "🥞", "🍕", "🥤", "🍩", "🥗", "🍌"];
 
+const maxMisses = 5;
+
 const elements = {
   orderBelt: document.querySelector("#orderBelt"),
   plate: document.querySelector("#plate"),
@@ -71,6 +73,8 @@ const elements = {
   feedbackText: document.querySelector("#feedbackText"),
   goalLabel: document.querySelector("#goalLabel"),
   goalBar: document.querySelector("#goalBar"),
+  missLabel: document.querySelector("#missLabel"),
+  chanceDots: document.querySelector("#chanceDots"),
   servedList: document.querySelector("#servedList"),
   servedCount: document.querySelector("#servedCount"),
   wordBank: document.querySelector("#wordBank"),
@@ -91,6 +95,7 @@ function createInitialState() {
     levelServed: 0,
     attempts: 0,
     correct: 0,
+    misses: 0,
     orders: [],
     usedWords: new Set(),
     recentIcons: [],
@@ -104,8 +109,8 @@ function getLevelGoal(level) {
 function getLevelSettings(level) {
   const clampedLevel = Math.min(level, 10);
   return {
-    spawnMs: Math.max(950, 2300 - clampedLevel * 130),
-    patienceMs: Math.max(5200, 12200 - clampedLevel * 520),
+    spawnMs: Math.max(1500, 3300 - clampedLevel * 130),
+    patienceMs: Math.max(9200, 17600 - clampedLevel * 520),
     maxOrders: Math.min(6, 3 + Math.floor(clampedLevel / 2)),
     points: 8 + clampedLevel * 3,
   };
@@ -173,6 +178,14 @@ function updateStats() {
   elements.goalLabel.textContent = `${state.levelServed} / ${goal}`;
   elements.goalBar.style.width = `${progress}%`;
   elements.servedCount.textContent = `${state.served} orders`;
+  elements.missLabel.textContent = `${Math.max(maxMisses - state.misses, 0)} left`;
+  elements.chanceDots.innerHTML = "";
+
+  for (let index = 0; index < maxMisses; index += 1) {
+    const dot = document.createElement("span");
+    dot.classList.toggle("lost", index < state.misses);
+    elements.chanceDots.append(dot);
+  }
 }
 
 function setMessage(title, body, isVisible = true) {
@@ -183,6 +196,25 @@ function setMessage(title, body, isVisible = true) {
 function scheduleOrders() {
   window.clearInterval(spawnTimerId);
   spawnTimerId = window.setInterval(spawnOrder, getLevelSettings(state.level).spawnMs);
+}
+
+function registerMiss(message) {
+  state.misses += 1;
+  state.combo = 0;
+  elements.feedbackText.textContent = message;
+  updateStats();
+
+  if (state.misses >= maxMisses) {
+    gameOver();
+  }
+}
+
+function gameOver() {
+  stopGame();
+  clearOrders();
+  elements.wordInput.value = "";
+  setMessage("Game Over", `You served ${state.served} orders and scored ${state.score}.`);
+  elements.feedbackText.textContent = "Press Start to try again.";
 }
 
 function spawnOrder() {
@@ -225,9 +257,7 @@ function tickOrders() {
 
     if (remainingRatio <= 0) {
       order.node.remove();
-      state.combo = 0;
-      elements.feedbackText.textContent = `"${order.word}" waited too long. Serve the next order.`;
-      updateStats();
+      registerMiss(`"${order.word}" waited too long. Serve the next order.`);
     } else {
       survivors.push(order);
     }

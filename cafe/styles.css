@@ -64,6 +64,7 @@ button {
 .typing-box,
 .status-card,
 .level-card,
+.miss-card,
 .served-card,
 .word-bank {
   background: var(--panel);
@@ -459,6 +460,7 @@ select {
 
 .status-card,
 .level-card,
+.miss-card,
 .served-card,
 .word-bank {
   padding: 16px;
@@ -533,6 +535,22 @@ select {
   border-radius: inherit;
   background: linear-gradient(90deg, #3e8d75, #f7c85b, #ef6a61);
   transition: width 0.22s ease;
+}
+
+.chance-dots {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+.chance-dots span {
+  height: 12px;
+  border-radius: 999px;
+  background: #3e8d75;
+}
+
+.chance-dots span.lost {
+  background: rgba(37, 54, 69, 0.14);
 }
 
 .served-list {
