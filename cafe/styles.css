@@ -136,6 +136,7 @@ select {
 }
 
 .controls button,
+.home-link,
 .typing-box button {
   border: 0;
   border-radius: 8px;
@@ -143,6 +144,15 @@ select {
   background: var(--tomato);
   font-weight: 900;
   box-shadow: 0 8px 18px rgba(239, 106, 97, 0.24);
+}
+
+.home-link {
+  display: grid;
+  place-items: center;
+  min-width: 86px;
+  padding: 12px 14px;
+  background: #3e8d75;
+  text-decoration: none;
 }
 
 .controls button {
@@ -187,8 +197,28 @@ select {
   border-radius: 8px;
   background:
     linear-gradient(180deg, rgba(255,255,255,0.24), rgba(255,255,255,0)),
-    linear-gradient(180deg, #ffecc2 0 54%, #d99158 54% 100%);
+    radial-gradient(circle at 86% 18%, rgba(255,255,255,0.55) 0 42px, transparent 43px),
+    linear-gradient(90deg, rgba(255,255,255,0.22) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255,255,255,0.22) 1px, transparent 1px),
+    linear-gradient(180deg, #ffeecb 0 54%, #d99158 54% 100%);
+  background-size: auto, 46px 46px, 46px 46px, auto;
   box-shadow: var(--shadow);
+}
+
+.cafe-stage::before {
+  content: "";
+  position: absolute;
+  right: 34px;
+  top: 26px;
+  width: 142px;
+  height: 74px;
+  border: 6px solid #5d3920;
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, transparent calc(50% - 3px), #5d3920 calc(50% - 3px) calc(50% + 3px), transparent calc(50% + 3px)),
+    linear-gradient(180deg, transparent calc(50% - 3px), #5d3920 calc(50% - 3px) calc(50% + 3px), transparent calc(50% + 3px)),
+    linear-gradient(135deg, #bfefff, #f8feff);
+  box-shadow: inset 0 -10px 0 rgba(61, 137, 158, 0.12);
 }
 
 .wall-art {
@@ -203,18 +233,20 @@ select {
   font-size: 1.1rem;
   font-weight: 950;
   letter-spacing: 0.12em;
+  box-shadow: 0 8px 0 rgba(89, 55, 31, 0.08);
 }
 
 .shelf {
   position: absolute;
-  top: 96px;
-  right: 34px;
+  top: 112px;
+  right: 42px;
   display: flex;
   align-items: end;
   gap: 12px;
   width: 190px;
   height: 72px;
   border-bottom: 8px solid #825332;
+  filter: drop-shadow(0 7px 0 rgba(89, 55, 31, 0.1));
 }
 
 .shelf span {
@@ -240,76 +272,22 @@ select {
 
 .barista {
   position: absolute;
-  left: 46px;
-  bottom: 92px;
-  width: 132px;
-  height: 190px;
+  left: 24px;
+  bottom: 80px;
+  width: 178px;
+  height: 230px;
+  object-fit: contain;
   z-index: 2;
-}
-
-.face {
-  position: absolute;
-  left: 32px;
-  top: 0;
-  width: 76px;
-  height: 76px;
-  border: 6px solid #fff;
-  border-radius: 50%;
-  background: #ffd89f;
-  box-shadow: 0 10px 20px rgba(89, 55, 31, 0.12);
-}
-
-.face::before {
-  content: "";
-  position: absolute;
-  left: 16px;
-  right: 16px;
-  top: -12px;
-  height: 28px;
-  border-radius: 28px 28px 8px 8px;
-  background: #3e8d75;
-}
-
-.face::after {
-  content: "";
-  position: absolute;
-  left: 23px;
-  top: 40px;
-  width: 28px;
-  height: 13px;
-  border-bottom: 4px solid #6b3f22;
-  border-radius: 0 0 28px 28px;
-}
-
-.body {
-  position: absolute;
-  left: 14px;
-  bottom: 0;
-  width: 104px;
-  height: 118px;
-  border-radius: 32px 32px 8px 8px;
-  background: #f6f0dc;
-  border: 6px solid #59371f;
-}
-
-.body::before {
-  content: "";
-  position: absolute;
-  left: 21px;
-  top: -5px;
-  width: 50px;
-  height: 72px;
-  border-radius: 0 0 24px 24px;
-  background: var(--tomato);
+  filter: drop-shadow(0 12px 0 rgba(89, 55, 31, 0.08));
 }
 
 .order-belt {
   position: absolute;
-  inset: 40px 26px 126px 210px;
+  inset: 32px 20px 124px 204px;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-content: start;
-  gap: 12px;
+  gap: 10px 12px;
   z-index: 3;
 }
 
@@ -321,15 +299,59 @@ select {
   gap: 10px;
   min-height: 74px;
   padding: 11px;
-  border: 2px solid rgba(89, 55, 31, 0.14);
+  border: 2px solid rgba(89, 55, 31, 0.12);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 10px 20px rgba(89, 55, 31, 0.12);
+  background:
+    radial-gradient(circle at 100% 50%, transparent 0 10px, rgba(255,255,255,0.96) 11px),
+    radial-gradient(circle at 0 50%, transparent 0 10px, rgba(255,255,255,0.96) 11px),
+    linear-gradient(180deg, #fffdf7, #fff8ea);
+  box-shadow: 0 10px 20px rgba(89, 55, 31, 0.12), inset 0 -4px 0 rgba(89, 55, 31, 0.05);
   transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.order-ticket::before {
+  content: "";
+  position: absolute;
+  left: 66px;
+  top: 12px;
+  bottom: 13px;
+  width: 2px;
+  background: repeating-linear-gradient(180deg, rgba(89,55,31,0.12) 0 5px, transparent 5px 10px);
 }
 
 .order-ticket.served {
   transform: translateY(-20px) scale(1.04);
+  opacity: 0;
+}
+
+.customer-line {
+  position: absolute;
+  left: 180px;
+  right: 330px;
+  bottom: 82px;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  gap: 8px;
+  min-height: 92px;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.waiting-customer {
+  width: 72px;
+  height: 92px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 0 rgba(89, 55, 31, 0.09));
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.waiting-customer:nth-child(2n) {
+  transform: translateY(4px);
+}
+
+.waiting-customer.served {
+  transform: translateY(-18px) scale(1.04);
   opacity: 0;
 }
 
@@ -339,8 +361,11 @@ select {
   width: 46px;
   height: 46px;
   border-radius: 50%;
-  background: var(--cream);
+  background:
+    radial-gradient(circle at 35% 28%, #fff 0 12px, transparent 13px),
+    var(--cream);
   font-size: 1.5rem;
+  box-shadow: inset 0 -4px 0 rgba(89, 55, 31, 0.07);
 }
 
 .order-word {
@@ -373,9 +398,11 @@ select {
   bottom: 0;
   height: 114px;
   background:
+    linear-gradient(180deg, rgba(255,255,255,0.14), transparent 30%),
     repeating-linear-gradient(90deg, #8b5a35 0 42px, #75482a 42px 46px),
     #8b5a35;
   border-top: 8px solid #59371f;
+  box-shadow: inset 0 12px 0 rgba(255,255,255,0.08);
 }
 
 .plate {
@@ -387,12 +414,13 @@ select {
   width: 230px;
   height: 86px;
   border-radius: 50%;
-  background: #fff7e8;
+  background:
+    radial-gradient(ellipse at 50% 45%, #fffdf7 0 36%, #fff7e8 37% 62%, #ead6b8 63% 100%);
   color: #6b3f22;
   font-size: 5rem;
   line-height: 1;
   transform: translateX(-50%);
-  box-shadow: inset 0 -5px 0 rgba(89, 55, 31, 0.12);
+  box-shadow: inset 0 -7px 0 rgba(89, 55, 31, 0.12), 0 12px 18px rgba(89,55,31,0.16);
 }
 
 .plate.pop {
@@ -415,7 +443,8 @@ select {
   border-radius: 8px;
   color: #59371f;
   text-align: center;
-  background: rgba(255, 255, 255, 0.78);
+  background: rgba(255, 253, 247, 0.86);
+  box-shadow: 0 12px 30px rgba(89, 55, 31, 0.12);
   transform: translate(-50%, -50%);
   z-index: 6;
 }

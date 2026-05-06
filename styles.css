@@ -91,7 +91,7 @@ h1 {
 }
 
 .fishing-card .game-art {
-  background: linear-gradient(180deg, #9be5ff 0 38%, #2fb5d2 38% 100%);
+  background: linear-gradient(180deg, #9be5ff 0 31%, #2fb5d2 31% 100%);
 }
 
 .pond {
@@ -114,57 +114,33 @@ h1 {
     #9c673a;
 }
 
-.fish {
+.home-rod {
   position: absolute;
-  right: 70px;
-  bottom: 54px;
-  width: 132px;
-  height: 58px;
-  border-radius: 50% 42% 42% 50%;
-  background: var(--gold);
+  left: 86px;
+  top: 10px;
+  width: 210px;
+  height: 218px;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 1px rgba(76, 44, 22, 0.2));
 }
 
-.fish::before {
-  content: "";
+.home-fish {
   position: absolute;
-  right: -30px;
-  top: 12px;
-  width: 38px;
-  height: 38px;
-  clip-path: polygon(0 50%, 100% 5%, 78% 50%, 100% 95%);
-  background: inherit;
+  object-fit: contain;
+  filter: drop-shadow(0 9px 8px rgba(6, 71, 92, 0.16));
 }
 
-.fish::after {
-  content: "word";
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  color: #173043;
-  font-weight: 950;
+.home-fish-one {
+  right: 64px;
+  bottom: 42px;
+  width: 142px;
 }
 
-.hook {
-  position: absolute;
-  left: 214px;
-  top: 52px;
-  width: 2px;
-  height: 106px;
-  background: rgba(23, 47, 63, 0.48);
-}
-
-.hook::after {
-  content: "";
-  position: absolute;
-  left: -8px;
-  bottom: -18px;
-  width: 17px;
-  height: 22px;
-  border: 3px solid rgba(23, 47, 63, 0.7);
-  border-left: 0;
-  border-top: 0;
-  border-radius: 0 0 14px 0;
+.home-fish-two {
+  left: 190px;
+  bottom: 28px;
+  width: 118px;
+  transform: scaleX(-1);
 }
 
 .cafe-card .game-art {

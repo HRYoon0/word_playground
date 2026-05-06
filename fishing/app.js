@@ -757,6 +757,15 @@ const fishTypes = [
   { className: "fish-speed-quick", label: "quick", speedMultiplier: 1.62, scoreMultiplier: 1.55 },
 ];
 
+const fishImages = {
+  "fish-shape-long": "./assets/fish-long.svg",
+  "fish-shape-round": "./assets/fish-round.svg",
+  "fish-shape-spiky": "./assets/fish-spiky.svg",
+  "fish-shape-flat": "./assets/fish-flat.svg",
+  "fish-shape-tiny": "./assets/fish-tiny.svg",
+  "fish-shape-big": "./assets/fish-big.svg",
+};
+
 const maxMisses = 5;
 
 const elements = {
@@ -941,11 +950,15 @@ function spawnFish() {
   const type = fishTypes[Math.floor(Math.random() * fishTypes.length)];
   const speed = randomBetween(settings.speedMin, settings.speedMax) * type.speedMultiplier;
 
-  fish.className = `fish ${shape} ${type.className}`;
-  fish.textContent = word;
+  fish.className = `fish image-fish ${shape} ${type.className}`;
+  fish.innerHTML = `
+    <img class="fish-img" src="${fishImages[shape]}" alt="" aria-hidden="true" />
+    <span class="fish-word">${word}</span>
+  `;
   fish.title = `${type.label} fish`;
   fish.style.setProperty("--fish-x", `${fromLeft ? -180 : pondRect.width + 55}px`);
   fish.style.setProperty("--fish-y", `${laneTop}px`);
+  fish.style.setProperty("--fish-facing", fromLeft ? "-1" : "1");
   fish.style.background = color;
   fish.style.minWidth = `${getFishWidth(word)}px`;
   fish.style.fontSize = getFishTextSize(word);

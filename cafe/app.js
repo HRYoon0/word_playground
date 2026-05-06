@@ -56,10 +56,17 @@ const wordSets = {
 
 const foodIcons = ["🍎", "🥛", "🍪", "🥪", "🍓", "🍰", "🥞", "🍕", "🥤", "🍩", "🥗", "🍌"];
 
+const customerImages = [
+  "./assets/customer-green.svg",
+  "./assets/customer-blue.svg",
+  "./assets/customer-yellow.svg",
+];
+
 const maxMisses = 5;
 
 const elements = {
   orderBelt: document.querySelector("#orderBelt"),
+  customerLine: document.querySelector("#customerLine"),
   plate: document.querySelector("#plate"),
   startButton: document.querySelector("#startButton"),
   levelSelect: document.querySelector("#levelSelect"),
@@ -225,7 +232,15 @@ function spawnOrder() {
 
   const word = getNextWord();
   const icon = getNextFoodIcon();
+  const customerImage = customerImages[Math.floor(Math.random() * customerImages.length)];
   const node = document.createElement("div");
+  const customerNode = document.createElement("img");
+
+  customerNode.className = "waiting-customer";
+  customerNode.src = customerImage;
+  customerNode.alt = "";
+  customerNode.setAttribute("aria-hidden", "true");
+
   node.className = "order-ticket";
   node.innerHTML = `
     <div class="food-icon" aria-hidden="true">${icon}</div>
@@ -234,11 +249,14 @@ function spawnOrder() {
   `;
 
   elements.orderBelt.append(node);
+  elements.customerLine.append(customerNode);
   state.orders.push({
     id: crypto.randomUUID(),
     word,
     icon,
+    customerImage,
     node,
+    customerNode,
     patienceNode: node.querySelector(".patience span"),
     createdAt: performance.now(),
     patienceMs: settings.patienceMs,
@@ -257,6 +275,7 @@ function tickOrders() {
 
     if (remainingRatio <= 0) {
       order.node.remove();
+      order.customerNode.remove();
       registerMiss(`"${order.word}" waited too long. Serve the next order.`);
     } else {
       survivors.push(order);
@@ -330,7 +349,9 @@ function serveWord(rawWord) {
   state.orders = state.orders.filter((order) => order.id !== match.id);
 
   match.node.classList.add("served");
+  match.customerNode.classList.add("served");
   setTimeout(() => match.node.remove(), 170);
+  setTimeout(() => match.customerNode.remove(), 170);
   addServedItem(match.icon);
   popPlate(match.icon);
   elements.feedbackText.textContent = `Served "${match.word}" with a ${speedBonus} point speed bonus.`;
@@ -340,6 +361,7 @@ function serveWord(rawWord) {
 
 function clearOrders() {
   state.orders.forEach((order) => order.node.remove());
+  state.orders.forEach((order) => order.customerNode.remove());
   state.orders = [];
 }
 
